@@ -10,3 +10,15 @@ class LearnscrapyItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     pass
+
+
+class SPA5Item(scrapy.Item):
+    # define the fields for your item here like:
+    # name = scrapy.Field()
+    title = scrapy.Field()
+    author = scrapy.Field()
+    price = scrapy.Field()
+    time = scrapy.Field()
+    press = scrapy.Field()
+    page = scrapy.Field()
+    isbm = scrapy.Field()
