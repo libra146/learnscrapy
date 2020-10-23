@@ -8,6 +8,12 @@
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 import logging
 
+from shutil import which
+
+SELENIUM_DRIVER_NAME = 'chrome'
+SELENIUM_DRIVER_EXECUTABLE_PATH = which(r'C:\Program Files (x86)\Google\Chrome\Application\chromedriver.exe')
+SELENIUM_DRIVER_ARGUMENTS = []  # '--headless' if using chrome instead of firefox
+
 LOG_LEVEL = logging.INFO
 BOT_NAME = 'learnscrapy'
 
@@ -54,9 +60,9 @@ DEFAULT_REQUEST_HEADERS = {'Accept': 'text/html,application/xhtml+xml,applicatio
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-# DOWNLOADER_MIDDLEWARES = {
-#    'learnscrapy.middlewares.LearnscrapyDownloaderMiddleware': 543,
-# }
+DOWNLOADER_MIDDLEWARES = {
+    'scrapy_selenium.SeleniumMiddleware': 800  # 这里的数值要大一些，因为中间件返回响应后对象后就不会调用后续的下载中间件了
+}
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
