@@ -61,7 +61,7 @@ DEFAULT_REQUEST_HEADERS = {'Accept': 'text/html,application/xhtml+xml,applicatio
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-    'scrapy_selenium.SeleniumMiddleware': 800  # 这里的数值要大一些，因为中间件返回响应后对象后就不会调用后续的下载中间件了
+    'learnscrapy.middlewares.MyDownloadMiddleware': 800  # 这里的数值要大一些，因为中间件返回响应后对象后就不会调用后续的下载中间件了
 }
 
 # Enable or disable extensions
@@ -72,9 +72,9 @@ DOWNLOADER_MIDDLEWARES = {
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-# ITEM_PIPELINES = {
-#    'learnscrapy.pipelines.LearnscrapyPipeline': 300,
-# }
+ITEM_PIPELINES = {
+    'learnscrapy.pipelines.Antispider1Pipeline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
