@@ -2,12 +2,13 @@
 #
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+import json
+import random
 
 from scrapy import signals
 
 
 # useful for handling different item types with a single interface
-
 
 class LearnscrapySpiderMiddleware:
     # Not all methods need to be defined. If a method is not defined,
@@ -101,3 +102,13 @@ class LearnscrapyDownloaderMiddleware:
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
+
+
+class Antispider2DownloaderMiddleware(LearnscrapyDownloaderMiddleware):
+    def __init__(self):
+        super(Antispider2DownloaderMiddleware, self).__init__()
+        with open('ua.json', 'r') as f:
+            self.ua = json.load(f)
+
+    def process_request(self, request, spider):
+        request.headers.update({'User-Agent': random.choice(self.ua)})
