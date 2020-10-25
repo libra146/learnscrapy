@@ -6,7 +6,6 @@
 from scrapy import signals
 
 # useful for handling different item types with a single interface
-from scrapy_selenium import SeleniumMiddleware
 
 
 class LearnscrapySpiderMiddleware:
@@ -101,16 +100,3 @@ class LearnscrapyDownloaderMiddleware:
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
-
-
-class MyDownloadMiddleware(SeleniumMiddleware):
-    def __init__(self, driver_name, driver_executable_path, driver_arguments,
-                 browser_executable_path):
-        super(MyDownloadMiddleware, self).__init__(driver_name, driver_executable_path, driver_arguments,
-                                                   browser_executable_path)
-        self.driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
-            "source": """
-            Object.defineProperty(navigator, 'webdriver', {
-            get: () => undefined
-            })"""
-        })
