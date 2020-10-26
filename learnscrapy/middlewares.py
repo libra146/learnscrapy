@@ -3,10 +3,10 @@
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-from scrapy import signals
-
-
+import requests
+from scrapy import signals, Request
 # useful for handling different item types with a single interface
+from scrapy.http import Response
 
 
 class LearnscrapySpiderMiddleware:
@@ -101,3 +101,25 @@ class LearnscrapyDownloaderMiddleware:
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
+
+
+class Antispider5DownloaderMiddleware(LearnscrapyDownloaderMiddleware):
+    def __init__(self):
+        super(Antispider5DownloaderMiddleware, self).__init__()
+
+    @property
+    def proxy(self):
+        return 'http://' + requests.get('http://192.168.233.128:5010/get').json()['proxy']
+
+    def process_request(self, request: Request, spider):
+        # 将请求加上代理
+        request.meta['proxy'] = self.proxy
+
+    def process_response(self, request, response: Response, spider):
+        # 如果响应代码为403，则将请求更换一个新代理重新请求
+        if response.status == 403:
+            print(f'重试：{response.url}')
+            request.meta['proxy'] = self.proxy
+            return request
+        else:
+            return response

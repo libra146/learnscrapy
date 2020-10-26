@@ -5,7 +5,10 @@
 
 
 # useful for handling different item types with a single interface
-import pymysql
+import time
+
+import pymongo
+from itemadapter import ItemAdapter
 
 
 class LearnscrapyPipeline:
@@ -13,33 +16,29 @@ class LearnscrapyPipeline:
         return item
 
 
-class SSR1Pipeline:
+class Antispider5Pipeline:
     def __init__(self):
-        self.conn: pymysql.connect
-        self.cur: pymysql.cursors.Cursor
+        self.client: pymongo.MongoClient
         self.queue = []
         self.count = 0
 
     def open_spider(self, spider):
-        self.conn = pymysql.connect(host='192.168.233.128', user='root', password='123456', db='test',
-                                    port=3306, charset='utf8')
-        self.cur = self.conn.cursor()
+        self.client = pymongo.MongoClient(host='192.168.233.128', port=27017)
+        self.db = self.client['test']
 
     def close_spider(self, spider):
         if len(self.queue) > 0:
             self.insert_database()
-        self.cur.close()
-        self.conn.close()
+        self.client.close()
 
     def insert_database(self):
-        sql = "insert into ssr1 (country,date,director,fraction,time,title) values (%s,%s,%s,%s,%s,%s)"
-        self.cur.executemany(sql, self.queue)
+        start = time.time()
+        self.db['test'].insert_many(self.queue)
+        print(time.time() - start)
         self.queue.clear()
-        self.conn.commit()
 
     def process_item(self, item, spider):
-        self.queue.append(
-            (item['country'], item['date'], item['director'], item['fraction'], item['time'], item['title']))
-        if len(self.queue) > 30:
+        self.queue.append(ItemAdapter(item).asdict())
+        if len(self.queue) > 50:
             self.insert_database()
         return item

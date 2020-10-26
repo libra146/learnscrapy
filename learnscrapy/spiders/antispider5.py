@@ -1,15 +1,15 @@
 import scrapy
 from scrapy import Request
 
-from learnscrapy.items import SSR1ScrapyItem
+from learnscrapy.items import Antispider5ScrapyItem
 
 
-class SSR1(scrapy.Spider):
-    name = 'ssr1'
+class Antispider5(scrapy.Spider):
+    name = 'antispider5'
 
     def start_requests(self):
         urls = [
-            f'https://ssr1.scrape.center/page/{a}' for a in range(1, 11)
+            f'https://antispider5.scrape.center/page/{a}' for a in range(1, 3)
         ]
         for url in urls:
             yield scrapy.Request(url=url, callback=self.parse)
@@ -17,7 +17,7 @@ class SSR1(scrapy.Spider):
     def parse(self, response, **kwargs):
         result = response.xpath('//div[@class="el-card item m-t is-hover-shadow"]')
         for a in result:
-            item = SSR1ScrapyItem()
+            item = Antispider5ScrapyItem()
             item['title'] = a.xpath('.//h2[@class="m-b-sm"]/text()').get()
             item['fraction'] = a.xpath('.//p[@class="score m-t-md m-b-n-sm"]/text()').get().strip()
             item['country'] = a.xpath('.//div[@class="m-v-sm info"]/span[1]/text()').get()
