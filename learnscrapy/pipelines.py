@@ -16,7 +16,7 @@ class LearnscrapyPipeline:
         return item
 
 
-class Login2Pipeline:
+class Antispider6Pipeline:
     def __init__(self):
         self.client: pymongo.MongoClient
         self.queue = []

@@ -2,11 +2,11 @@
 #
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+import random
 
-from scrapy import signals
-
-
+from scrapy import signals, Request
 # useful for handling different item types with a single interface
+from scrapy.http import Response
 
 
 class LearnscrapySpiderMiddleware:
@@ -101,3 +101,24 @@ class LearnscrapyDownloaderMiddleware:
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
+
+
+class Antispider6SpiderMiddleware(LearnscrapySpiderMiddleware):
+    def __init__(self):
+        super(Antispider6SpiderMiddleware, self).__init__()
+
+    def process_request(self, request: Request, spider):
+        if len(spider.cookies) >= 10:
+            # 更换cookie
+            request.cookies = dict([random.choice(spider.cookies)[0].decode().split('=')])
+        # 为什么这里要返回None，不能返回request？返回request爬虫会直接关闭，无法接续爬，下篇文章中来解释，这里困扰了我半个晚上。
+        return None
+
+    def process_response(self, request: Request, response: Response, spider):
+        # 如果遇到了403，更换cookie,和更换代理IP的思路是一样的
+        if response.status == 403:
+            print('cookie被ban，更换cookie')
+            request.cookies = dict([random.choice(spider.cookies)[0].decode().split('=')])
+            return request
+        else:
+            return response

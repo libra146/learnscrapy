@@ -12,7 +12,7 @@ class LearnscrapyItem(scrapy.Item):
     pass
 
 
-class Login2ScrapyItem(scrapy.Item):
+class Antispider6ScrapyItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     title = scrapy.Field()

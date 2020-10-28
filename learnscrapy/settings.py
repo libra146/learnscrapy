@@ -26,7 +26,7 @@ ROBOTSTXT_OBEY = False
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 0.1
+# DOWNLOAD_DELAY = 0.1
 # The download delay setting will honor only one of:
 # CONCURRENT_REQUESTS_PER_DOMAIN = 16
 # CONCURRENT_REQUESTS_PER_IP = 16
@@ -54,9 +54,9 @@ DEFAULT_REQUEST_HEADERS = {'Accept': 'text/html,application/xhtml+xml,applicatio
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-# DOWNLOADER_MIDDLEWARES = {
-#    'learnscrapy.middlewares.LearnscrapyDownloaderMiddleware': 543,
-# }
+DOWNLOADER_MIDDLEWARES = {
+    'learnscrapy.middlewares.Antispider6SpiderMiddleware': 543,
+}
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
@@ -67,7 +67,7 @@ DEFAULT_REQUEST_HEADERS = {'Accept': 'text/html,application/xhtml+xml,applicatio
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'learnscrapy.pipelines.Login2Pipeline': 300,
+    'learnscrapy.pipelines.Antispider6Pipeline': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
