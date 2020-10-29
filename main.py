@@ -1,4 +1,4 @@
 from scrapy.cmdline import execute
 
 if __name__ == '__main__':
-    execute(['scrapy', 'crawl', 'antispider6'])
+    execute(['scrapy', 'crawl', 'antispider7'])

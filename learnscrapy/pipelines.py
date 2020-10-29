@@ -5,10 +5,12 @@
 
 
 # useful for handling different item types with a single interface
+import os
 import time
 
 import pymongo as pymongo
 from itemadapter import ItemAdapter
+from scrapy.exceptions import CloseSpider
 
 
 class LearnscrapyPipeline:
@@ -16,14 +18,19 @@ class LearnscrapyPipeline:
         return item
 
 
-class Antispider6Pipeline:
+class Antispider7Pipeline:
     def __init__(self):
         self.client: pymongo.MongoClient
         self.queue = []
         self.count = 0
 
     def open_spider(self, spider):
-        self.client = pymongo.MongoClient(host='192.168.233.128', port=27017)
+        # 从环境变量中提取数据库url
+        if url := os.getenv('MONGOTEST'):
+            pass
+        else:
+            raise CloseSpider('mongo url is null!')
+        self.client = pymongo.MongoClient(url)
         self.db = self.client['test']
 
     def close_spider(self, spider):
@@ -39,6 +46,6 @@ class Antispider6Pipeline:
 
     def process_item(self, item, spider):
         self.queue.append(ItemAdapter(item).asdict())
-        if len(self.queue) > 50:
+        if len(self.queue) > 10:
             self.insert_database()
         return item

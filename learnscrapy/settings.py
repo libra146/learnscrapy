@@ -55,7 +55,7 @@ DEFAULT_REQUEST_HEADERS = {'Accept': 'text/html,application/xhtml+xml,applicatio
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-    'learnscrapy.middlewares.Antispider6SpiderMiddleware': 543,
+    'learnscrapy.middlewares.Antispider7SpiderMiddleware': 543,
 }
 
 # Enable or disable extensions
@@ -67,7 +67,7 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'learnscrapy.pipelines.Antispider6Pipeline': 300,
+    'learnscrapy.pipelines.Antispider7Pipeline': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

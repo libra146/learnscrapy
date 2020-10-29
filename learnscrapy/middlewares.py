@@ -4,6 +4,7 @@
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 import random
 
+import requests
 from scrapy import signals, Request
 # useful for handling different item types with a single interface
 from scrapy.http import Response
@@ -103,22 +104,40 @@ class LearnscrapyDownloaderMiddleware:
         spider.logger.info('Spider opened: %s' % spider.name)
 
 
-class Antispider6SpiderMiddleware(LearnscrapySpiderMiddleware):
+class Antispider7SpiderMiddleware(LearnscrapySpiderMiddleware):
     def __init__(self):
-        super(Antispider6SpiderMiddleware, self).__init__()
+        super(Antispider7SpiderMiddleware, self).__init__()
+
+    @property
+    def proxy(self):
+        return 'http://' + requests.get('http://192.168.233.128:5010/get').json()['proxy']
 
     def process_request(self, request: Request, spider):
         if len(spider.cookies) >= 10:
-            # 更换cookie
-            request.cookies = dict([random.choice(spider.cookies)[0].decode().split('=')])
-        # 为什么这里要返回None，不能返回request？返回request爬虫会直接关闭，无法接续爬，下篇文章中来解释，这里困扰了我半个晚上。
+            request.headers.update({'authorization': f'jwt {random.choice(spider.cookies)}'})
+            request.meta['proxy'] = self.proxy
         return None
 
     def process_response(self, request: Request, response: Response, spider):
-        # 如果遇到了403，更换cookie,和更换代理IP的思路是一样的
+        # 如果遇到了403，更换cookie或代理
         if response.status == 403:
-            print('cookie被ban，更换cookie')
-            request.cookies = dict([random.choice(spider.cookies)[0].decode().split('=')])
+            if request.meta['change_proxy'] == 0 and request.meta['change_cookie'] == 0:
+                # 先换cookie
+                print('cookie被ban，更换cookie')
+                request.headers.update({'authorization': f'jwt {random.choice(spider.cookies)}'})
+                request.meta['change_cookie'] = 1
+            elif request.meta['change_proxy'] == 0 and request.meta['change_cookie'] == 1:
+                print(f'重试：{response.url}')
+                request.meta['proxy'] = self.proxy
+                request.meta['change_proxy'] = 1
+            elif request.meta['change_proxy'] == 1 and request.meta['change_cookie'] == 0:
+                print('cookie被ban，更换cookie')
+                request.meta['change_cookie'] = 1
+                request.headers.update({'authorization': f'jwt {random.choice(spider.cookies)}'})
+            else:
+                request.headers.update({'authorization': f'jwt {random.choice(spider.cookies)}'})
+                request.meta['proxy'] = self.proxy
+                print('两个都换')
             return request
         else:
             return response
