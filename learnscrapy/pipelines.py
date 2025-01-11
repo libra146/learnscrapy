@@ -23,8 +23,8 @@ class SPA4Pipeline:
         self.count = 0
 
     def open_spider(self, spider):
-        self.conn = pymysql.connect(host='192.168.233.128', user='root', password='123456', db='test',
-                                    port=3306, charset='utf8')
+        self.conn = pymysql.connect(host='172.24.233.27', user='root', password='123456', db='test',
+                                    port=60101, charset='utf8')
         self.cur = self.conn.cursor()
 
     def close_spider(self, spider):
