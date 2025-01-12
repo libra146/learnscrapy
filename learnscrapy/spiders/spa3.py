@@ -17,6 +17,9 @@ class SPA3Spider(scrapy.Spider):
     def parse(self, response, **kwargs):
         result = response.json()
         for a in result['results']:
+            # 越界返回空数据过滤
+            if a['id'] > result['count']:
+                continue
             item = SPA3Item()
             item['title'] = a['name'] + a['alias']
             item['fraction'] = a['score']
