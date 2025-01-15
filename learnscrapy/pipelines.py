@@ -23,7 +23,7 @@ class Login2Pipeline:
         self.count = 0
 
     def open_spider(self, spider):
-        self.client = pymongo.MongoClient(host='192.168.233.128', port=27017)
+        self.client = pymongo.MongoClient(host='172.24.233.27', port=60103, username='root', password='123456')
         self.db = self.client['test']
 
     def close_spider(self, spider):
