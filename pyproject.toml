@@ -9,6 +9,7 @@ readme = "README.md"
 python = "^3.10"
 scrapy = "^2.11.0"
 pymysql = "^1.1.1"
+pymongo = "^4.10.1"
 
 
 [build-system]
