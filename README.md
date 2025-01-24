@@ -14,6 +14,7 @@
 - login1-3 [链接](https://blog.d77.xyz/archives/6f6e2126.html)
 - antispider1-4 [链接](https://blog.d77.xyz/archives/f10ab485.html)
 - antispider5-7 [链接](https://blog.d77.xyz/archives/860d8413.html)
+- spa7-9 [链接](https://blog.d77.xyz/archives/498014e0.html)
 
 20250112 更新：
 
