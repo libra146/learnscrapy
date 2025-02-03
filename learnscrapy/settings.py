@@ -90,3 +90,7 @@ DEFAULT_REQUEST_HEADERS = {'Accept': 'text/html,application/xhtml+xml,applicatio
 # HTTPCACHE_DIR = 'httpcache'
 # HTTPCACHE_IGNORE_HTTP_CODES = []
 # HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+DOWNLOAD_HANDLERS = {
+    "https": "scrapy.core.downloader.handlers.http2.H2DownloadHandler",
+}
