@@ -6,7 +6,7 @@ authors = [
     { name = "libra146", email = "1462326016@qq.com" }
 ]
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 dependencies = [
     "scrapy (>=2.12.0,<3.0.0)",
     "requests (>=2.32.3,<3.0.0)",
@@ -15,12 +15,9 @@ dependencies = [
     "pywasm (>=2.0.1,<3.0.0)",
     "httpx[http2] (>=0.28.1,<0.29.0)",
     "twisted[http2] (>=24.11.0,<25.0.0)",
-    "frida (==16.3.3)",
+    "frida (==16.6.6)",
     "frida-tools (>=13.6.1,<14.0.0)",
-
+    "loguru (>=0.7.3,<0.8.0)",
+    "pip>=25.0.1",
 ]
 
-
-[build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
-build-backend = "poetry.core.masonry.api"
